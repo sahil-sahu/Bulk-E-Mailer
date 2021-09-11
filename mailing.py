@@ -4,9 +4,9 @@ from mail import send_mail
 sender = "contrivers512@gmail.com"
 psswd = "sahil@shuvam2003"
 to = "sahilku2003@gmail.com"
-sub = "Designathon"
+sub = "Conduct of Designathon"
 content = "aloo"
-file = ["./design.pdf"]
+file = ["./designathon.pdf"]
 smtp = smtplib.SMTP("localhost", 587)
 smtp.starttls()
 smtp.login(sender, psswd)
