@@ -4,62 +4,62 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 
-fromaddr = "contrivers512@gmail.com"
-# toaddr = "shuvamanupam7@gmail.com"
-toaddr = "sahilku2003@gmail.com, contrivers512@gmail.com, shuvamanupam7@gmail.com"
+def mailit(mails, file):
 
-# instance of MIMEMultipart
-msg = MIMEMultipart()
+    fromaddr = "contrivers512@gmail.com"
+    toaddr = ", ".join(mails)
 
-# storing the senders email address
-msg['From'] = "Contrivers Events contrivers512@gmail.com"
+    # instance of MIMEMultipart
+    msg = MIMEMultipart()
 
-# storing the receivers email address
-msg['To'] = toaddr
+    # storing the senders email address
+    msg['From'] = "Contrivers Events contrivers512@gmail.com"
 
-# storing the subject
-msg['Subject'] = "The Real Final HTML"
+    # storing the receivers email address
+    msg['To'] = toaddr
 
-# string to store the body of the mail
-f = open("mail.html")
-body = f.read()
-f.close()
+    # storing the subject
+    msg['Subject'] = "Designathon"
 
-# attach the body with the msg instance
-msg.attach(MIMEText(body, 'html'))
+    # string to store the body of the mail
+    f = open("mail.html")
+    body = f.read()
+    f.close()
 
-# open the file to be sent
-filename = "design.pdf"
-attachment = open("./design.pdf", "rb")
+    # attach the body with the msg instance
+    msg.attach(MIMEText(body, 'html'))
 
-# instance of MIMEBase and named as p
-p = MIMEBase('application', 'octet-stream')
+    # open the file to be sent
+    filename = "designathon.docx"
+    attachment = open(file, "rb")
 
-# To change the payload into encoded form
-p.set_payload((attachment).read())
+    # instance of MIMEBase and named as p
+    p = MIMEBase('application', 'octet-stream')
 
-# encode into base64
-encoders.encode_base64(p)
+    # To change the payload into encoded form
+    p.set_payload((attachment).read())
 
-p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+    # encode into base64
+    encoders.encode_base64(p)
 
-# attach the instance 'p' to instance 'msg'
-msg.attach(p)
+    p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
 
-# creates SMTP session
+    # attach the instance 'p' to instance 'msg'
+    msg.attach(p)
+
+    # creates SMTP session
+
+    text = msg.as_string()
+    s.sendmail(fromaddr, toaddr, text)
+
+
 s = smtplib.SMTP('smtp.gmail.com', 587)
-
-# start TLS for security
 s.starttls()
+s.login("contrivers512@gmail.com", "sahil@shuvam2003")
 
-# Authentication
-s.login(fromaddr, "sahil@shuvam2003")
+for i in range(3):
+    mailit(["sahilku2003@gmail.com", "shuvamanupam7@gmail.com",
+            "contact.contrivers@gmail.com"], "./docs/KENDRIYAVIDYLAYAAFSBIDAR.docx")
+    print("done!!!")
 
-# Converts the Multipart msg into a string
-text = msg.as_string()
-
-# sending the mail
-s.sendmail(fromaddr, toaddr, text)
-
-# terminating the session
 s.quit()
