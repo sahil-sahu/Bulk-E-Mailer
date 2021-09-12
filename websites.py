@@ -15,6 +15,13 @@ mails={'KV AFS NO. 1 AGRA CANTT': ['kv1afsagra@gmail.com', 'ppl.agracanttno1@kvs
 #         str1 += ele  
 #     return str1
 
+# test_list = [1, 3, 5, 6, 3, 5, 6, 1]
+# print ("The original list is : " +  str(test_list))
+
+# res = []
+# for i in test_list:
+#     if i not in res:
+#         res.append(i)
 
 # for i in elements:
 #     l=listToString(official[i])
@@ -43,5 +50,5 @@ mails={'KV AFS NO. 1 AGRA CANTT': ['kv1afsagra@gmail.com', 'ppl.agracanttno1@kvs
 # p=str(p)
 
 # f = open("demo.py", "a")
-# f.write("new={"+p+"}")
+# f.write("new="+p)
 # f.close()
