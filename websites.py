@@ -18,6 +18,8 @@ mails={'KV AFS NO. 1 AGRA CANTT': ['kv1afsagra@gmail.com', 'ppl.agracanttno1@kvs
 # test_list = [1, 3, 5, 6, 3, 5, 6, 1]
 # print ("The original list is : " +  str(test_list))
 
+
+#remove duplicates
 # res = []
 # for i in test_list:
 #     if i not in res:
