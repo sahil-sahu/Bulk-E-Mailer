@@ -1,65 +1,75 @@
+import multiprocessing
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
+import re
+
+regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
+
+
+def check(email):
+    if(re.fullmatch(regex, email)):
+        return email
+    else:
+        if re.fullmatch(regex, email[:len(email)]):
+            return email[:len(email)]
+
+        else:
+            return None
 
 def mailit(mails, file):
 
     fromaddr = "contrivers512@gmail.com"
-    toaddr = ", ".join(mails)
-
-    # instance of MIMEMultipart
+    toaddr = mails
     msg = MIMEMultipart()
-
-    # storing the senders email address
     msg['From'] = "Contrivers Events contrivers512@gmail.com"
-
-    # storing the receivers email address
     msg['To'] = toaddr
-
-    # storing the subject
-    msg['Subject'] = "Designathon"
-
-    # string to store the body of the mail
-    f = open("mail.html")
+    msg['Subject'] = "Join the India's Biggest Designathon"
+    f = open("../mail.html")
     body = f.read()
     f.close()
-
-    # attach the body with the msg instance
     msg.attach(MIMEText(body, 'html'))
-
-    # open the file to be sent
     filename = "designathon.docx"
     attachment = open(file, "rb")
-
-    # instance of MIMEBase and named as p
     p = MIMEBase('application', 'octet-stream')
-
-    # To change the payload into encoded form
     p.set_payload((attachment).read())
-
-    # encode into base64
     encoders.encode_base64(p)
-
     p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
-
-    # attach the instance 'p' to instance 'msg'
     msg.attach(p)
-
-    # creates SMTP session
-
     text = msg.as_string()
     s.sendmail(fromaddr, toaddr, text)
 
 
-s = smtplib.SMTP('smtp.gmail.com', 587)
-s.starttls()
-s.login("contrivers512@gmail.com", "sahil@shuvam2003")
+# print(type(sys.argv[-1]))
 
-for i in range(3):
-    mailit(["sahilku2003@gmail.com", "shuvamanupam7@gmail.com",
-            "contact.contrivers@gmail.com"], "./docs/KENDRIYAVIDYLAYAAFSBIDAR.docx")
-    print("done!!!")
 
-s.quit()
+def collector(data):
+    for i in data:
+        for k in data[i][:-1]:
+            path = i.replace(' ', '') + ".docx"
+            if check(k):
+                mailit(k, f"../docs/{path}")
+        print("done!!!")
+
+
+if __name__ == "__main__":
+    s = smtplib.SMTP('smtp.gmail.com', 587)
+    s.starttls()
+    s.login("contrivers512@gmail.com", "sahil@shuvam2003")
+    print("logged In")
+    from websites import school, distributor
+
+    num_process = 1
+    lst = distributor(school, num_process)
+    processes = []
+    for i in lst:
+        p = multiprocessing.Process(target=collector, args=[i])
+        p.start()
+        processes.append(p)
+    for i in processes:
+        i.join()
+
+    s.quit()
+    print("logged Out")
